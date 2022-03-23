@@ -6,15 +6,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class LocalStorage {
+	
 	public boolean createNote(String name) {
 		try {
 			File myObj = new File(name+".txt");
 			if (myObj.createNewFile()) {
 				System.out.println("File created: " + myObj.getName());
+				return true;
 			} else {
-				System.out.println("File already exists.");
+				throw new IOException("File already exist.");
 			}
-			return true;
 	    } catch (IOException e) {
 	      	e.printStackTrace();
 			return false;
