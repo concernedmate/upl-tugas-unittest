@@ -18,18 +18,21 @@ public class LocalStorage {
 			}
 	    } catch (IOException e) {
 	      	e.printStackTrace();
-			return false;
+	      	File myObj = new File(name+".txt");
+	      	return myObj.exists();
 	    }
 	}
 	
 	public boolean saveNote(String text, String filename) {
 		try {
-			createNote(filename);
-			FileWriter myWriter = new FileWriter(filename+".txt");
-			myWriter.write(text);
-	      	myWriter.close();
-			return true;
-	    } catch (IOException e) {
+			if (createNote(filename)) {
+				FileWriter myWriter = new FileWriter(filename+".txt");
+				myWriter.write(text);
+		      	myWriter.close();
+				return true;
+			};
+			throw new Exception();
+	    } catch (Exception e) {
 	    	e.printStackTrace();
 			return false;
 	    }

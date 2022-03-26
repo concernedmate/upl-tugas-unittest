@@ -1,10 +1,8 @@
 package notepad;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 import java.io.*;
-import java.util.Scanner;
 
 import org.junit.jupiter.api.*;
 
@@ -30,6 +28,7 @@ public class LocalStorageTest {
 		
 		//assert
 		assertEquals(true, file.exists());
+		assertEquals(true, result);
 		if (file.exists()) {
 			file.delete();
 		}
@@ -53,7 +52,7 @@ public class LocalStorageTest {
 		boolean result = storage.createNote("test");
 		
 		//assert
-		assertEquals(false, result);
+		assertEquals(file.exists(), result);
 		if (file.exists()) {
 			file.delete();
 		}
@@ -69,13 +68,33 @@ public class LocalStorageTest {
 		}
 		
 		//act and act
-		boolean result = storage.saveNote("test-text", "text");
+		boolean result = storage.saveNote("test-text", "test");
 		assertEquals(true, result);
-		String data = storage.readNote("text");
+		String data = storage.readNote("test");
 		assertEquals("test-text", data);
 		
 		if (file.exists()) {
 			file.delete();
 		}
+	}
+	
+	@Test
+	@DisplayName("test saveNote failure")
+	public void testSaveFail() {
+		//setup
+		File file = new File("test.txt");
+		try {
+			file.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (file.exists()) {
+			file.setWritable(false);
+		}
+
+		//act and assert
+		boolean result = storage.saveNote("test-text", "test");
+		assertEquals(false, result);
+		
 	}
 }
