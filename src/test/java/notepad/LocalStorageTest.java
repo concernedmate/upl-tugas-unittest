@@ -91,10 +91,11 @@ public class LocalStorageTest {
 		if (file.exists()) {
 			file.setWritable(false);
 		}
-
-		//act and assert
 		boolean result = storage.saveNote("test-text", "test");
 		assertEquals(false, result);
-		
+
+		if (file.exists()) {
+			file.delete();
+		}
 	}
 }
